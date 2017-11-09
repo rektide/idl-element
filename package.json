@@ -1,0 +1,16 @@
+{
+	"name": "idl-element",
+	"version": "1.0.0",
+	"description": "Create a data-island Custom Element from an idl",
+	"main": "idl-element.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://archive.voodoowarez.com/idl-element"
+	},
+	"keywords": [],
+	"author": "rektide de la faye",
+	"license": "X11"
+}
