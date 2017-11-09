@@ -1,0 +1,69 @@
+<% var target= underlay? 'this._underlay.': 'this._' -%>
+<% var observedAttributes= [] %>
+<% var events= [] %>
+
+class <%= name %> extends HTMLElement{
+<% for( member of members){ -%>
+<% if( member.type== "attribute"){ -%>
+<% if( member.name.substring( 0, 2)== "on"){
+	events.push( member.name.substring( 0, 2))
+	continue
+} -%>
+	get <%= member.name %>()/*: <%= idlType(member.idlType) %> */{
+		return <%= target %><% member.name %>
+	}
+<% observedAttributes.push( member.name) -%>
+<% if( !member.readonly){ -%>
+	set <%= member.name %>( val/*: <%= idlType(member.idlType) %> */)/*: void */{
+		<%= target %><% member.name %>= val
+	}
+<% } -%>
+<% }else if(member.type=== "operation"){ -%>
+	<% member.name %>(<%= member.arguments.join(",") %>)/*: <%= idlType(member.idlType) %> */{
+<% if( underlay){
+		return <%= target %><% member.name %>(<%= member.arguments.join(",") %>)
+<% } -%>
+	}
+<% } -%>
+<% } -%>
+<% if( underlay) { -%>
+<% for( name of events){ -%>
+	_<%= name %>(evt){
+		this.dispatchEvent("<%= name %>", evt)
+	}
+<% } -%>
+<% } -%>
+
+	static get observedAttributes(){ return <%= JSON.stringify( observedAttributes) %> }
+	static get events(){ return <%= JSON.stringify( events) %> }
+	constructor(){
+<% if( underlay){ -%>
+<% for( name of events){ -%>
+		this._<%= name %>= this._<%= name %>.bind( this)
+<% } -%>
+<% } -%>
+	}
+	connectedCallback(){
+<% if( underlay){ -%>
+		if( !this._underlay&& this._underlyingFactory){
+<% function bindHandlers(removeListener){ -%>
+			if( this._underlay.on){
+				for( var name of events){
+					this._underlay[removeListener? "removeEventListener": "addEventListener"]( "<%= name %>", this._<%= name %>)
+				}
+			}
+<% } %>
+			var val= this._underlyingFactory()
+			if( val.then){
+				Promise.resolve( val).then(val=> {
+					this._underlay= val
+					<% bindHandlers() %>
+				})
+			}else{
+				this._underlay= val
+				<% bindHandlers() %>
+			}
+		}
+<% } -%>
+	}
+}
