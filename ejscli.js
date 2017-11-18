@@ -26,7 +26,10 @@ export async function objectMapper( stringArray, target, mapper){
 */
 export async function omniImport( filename){
 	try{
-		return (await import( filename, "default")).default;
+		var
+		  cwdFilename= process.cwd()+ "/"+ filename,
+		  imported= await import( cwdFilename)
+		return imported.default
 	}catch(ex){
 		var text= await fs.readFile( filename, "utf8")
 		return JSON.parse( text)
