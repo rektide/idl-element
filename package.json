@@ -1,19 +1,33 @@
 {
-	"name": "idl-element",
+	"name": "ejscli",
 	"version": "1.0.0",
-	"description": "Create a data-island Custom Element from an idl",
-	"main": "idl-element.js",
+	"description": "Evaluate an ejs template",
+	"main": "ejscli.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
+	"bin": "./ejscli",
 	"repository": {
 		"type": "git",
-		"url": "https://archive.voodoowarez.com/idl-element"
+		"url": "https://archive.voodoowarez.com/ejs"
 	},
-	"keywords": [],
+	"keywords": [
+		"ejs",
+		"cli"
+	],
 	"author": "rektide de la faye",
-	"license": "X11",
+	"license": "MIT",
 	"dependencies": {
-		"webidl2": "^8.1.0"
-	}
+		"@std/esm": "^0.16.0",
+		"context-runner": "^1.0.0",
+		"ejs": "^2.5.7",
+		"get-stdin": "^5.0.1",
+		"minimist": "^1.2.0",
+		"mz": "^2.7.0"
+	},
+	"@std/esm": {
+		"esm": "js"
+	},
+	"es:next": true,
+	"module": true
 }

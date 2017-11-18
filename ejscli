@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+"use strict"
+
+process.on("unhandledRejection", console.error.bind( console))
+
+var
+  esm= require( "@std/esm")(module),
+  ejscli= esm( "./ejscli.js").default
+
+ejscli().then( output=> console.log( output.output))
