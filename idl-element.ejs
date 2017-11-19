@@ -4,7 +4,8 @@ var
   observedAttributes= [],
   events= [],
   // optionals:
-  underlay= typeof underlay!== "undefined"&& underlay
+  underlay= typeof underlay!== "undefined"&& underlay,
+  forceSet= typeof forceSet!== "undefined"&& forceSet
 function idlType(i){ return i.idlType }
 -%>
 
@@ -19,9 +20,13 @@ class <%= name %> extends HTMLElement{
 		return <%= target %><%= member.name %>
 	}
 <% observedAttributes.push( member.name) -%>
-<% if( !member.readonly){ -%>
+<% if( !member.readonly|| forceSet){ -%>
 	set <%= member.name %>( val/*: <%= idlType(member.idlType) %> */)/*: void */{
-		<%= target %><% member.name %>= val
+<% if( !member.readonly|| forceSet=== "set"){ -%>
+		<%= target %><%= member.name %>= val
+<% }else{ -%>
+		throw new Error("Cannot set '<%= member.name %>'")
+<% } -%>
 	}
 <% } -%>
 <% }else if(member.type=== "operation"){ -%>
