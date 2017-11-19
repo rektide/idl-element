@@ -6,6 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
+	"bin": "./bin/idl-element",
 	"repository": {
 		"type": "git",
 		"url": "https://archive.voodoowarez.com/idl-element"
@@ -14,6 +15,11 @@
 	"author": "rektide de la faye",
 	"license": "X11",
 	"dependencies": {
+		"ejs": "^2.5.7",
+		"ejscli": "^1.0.2",
+		"get-stdin": "^5.0.1",
+		"minimist": "^1.2.0",
+		"mz": "^2.7.0",
 		"webidl2": "^8.1.0"
 	}
 }

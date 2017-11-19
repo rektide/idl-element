@@ -1,6 +1,8 @@
 <% var target= underlay? 'this._underlay.': 'this._' -%>
 <% var observedAttributes= [] %>
 <% var events= [] %>
+<% var underlay= typeof underlay!== "undefined"&& underlay %>
+<% function idlType(i){ return i.idlType } %>
 
 class <%= name %> extends HTMLElement{
 <% for( member of members){ -%>
@@ -20,7 +22,7 @@ class <%= name %> extends HTMLElement{
 <% } -%>
 <% }else if(member.type=== "operation"){ -%>
 	<% member.name %>(<%= member.arguments.join(",") %>)/*: <%= idlType(member.idlType) %> */{
-<% if( underlay){
+<% if( underlay){ %>
 		return <%= target %><% member.name %>(<%= member.arguments.join(",") %>)
 <% } -%>
 	}
