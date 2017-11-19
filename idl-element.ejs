@@ -1,8 +1,12 @@
-<% var target= underlay? 'this._underlay.': 'this._' -%>
-<% var observedAttributes= [] %>
-<% var events= [] %>
-<% var underlay= typeof underlay!== "undefined"&& underlay %>
-<% function idlType(i){ return i.idlType } %>
+<%
+var
+  target= underlay? 'this._underlay.': 'this._',
+  observedAttributes= [],
+  events= [],
+  // optionals:
+  underlay= typeof underlay!== "undefined"&& underlay
+function idlType(i){ return i.idlType }
+-%>
 
 class <%= name %> extends HTMLElement{
 <% for( member of members){ -%>
@@ -12,7 +16,7 @@ class <%= name %> extends HTMLElement{
 	continue
 } -%>
 	get <%= member.name %>()/*: <%= idlType(member.idlType) %> */{
-		return <%= target %><% member.name %>
+		return <%= target %><%= member.name %>
 	}
 <% observedAttributes.push( member.name) -%>
 <% if( !member.readonly){ -%>
@@ -36,7 +40,7 @@ class <%= name %> extends HTMLElement{
 <% } -%>
 <% } -%>
 
-	static get observedAttributes(){ return <%= JSON.stringify( observedAttributes) %> }
+	static get observedAttributes(){ return <%- JSON.stringify( observedAttributes) %> }
 	static get events(){ return <%= JSON.stringify( events) %> }
 	constructor(){
 <% if( underlay){ -%>

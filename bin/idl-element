@@ -1,4 +1,4 @@
 #!/bin/bash
 set -x
 PROJECTPATH=$(realpath -s $(dirname $0)/..)
-$PROJECTPATH/node_modules/.bin/ejscli $PROJECTPATH/idl-element.ejs -c "$1"
+$PROJECTPATH/node_modules/.bin/ejscli $PROJECTPATH/idl-element.ejs -c $*
