@@ -7,13 +7,13 @@ var
   underlay= typeof underlay!== "undefined"&& underlay,
   forceSet= typeof forceSet!== "undefined"&& forceSet
 function idlType(i){ return i.idlType }
--%>
 
+-%>
 class <%= name %> extends HTMLElement{
 <% for( member of members){ -%>
 <% if( member.type== "attribute"){ -%>
 <% if( member.name.substring( 0, 2)== "on"){
-	events.push( member.name.substring( 0, 2))
+	events.push( member.name.substring( 2))
 	continue
 } -%>
 	get <%= member.name %>()/*: <%= idlType(member.idlType) %> */{
@@ -30,7 +30,7 @@ class <%= name %> extends HTMLElement{
 	}
 <% } -%>
 <% }else if(member.type=== "operation"){ -%>
-	<% member.name %>(<%= member.arguments.join(",") %>)/*: <%= idlType(member.idlType) %> */{
+	<%= member.name %>(<%= member.arguments.join(",") %>)/*: <%= idlType(member.idlType) %> */{
 <% if( underlay){ %>
 		return <%= target %><% member.name %>(<%= member.arguments.join(",") %>)
 <% } -%>
@@ -46,7 +46,7 @@ class <%= name %> extends HTMLElement{
 <% } -%>
 
 	static get observedAttributes(){ return <%- JSON.stringify( observedAttributes) %> }
-	static get events(){ return <%= JSON.stringify( events) %> }
+	static get events(){ return <%- JSON.stringify( events) %> }
 	constructor(){
 <% if( underlay){ -%>
 <% for( name of events){ -%>
