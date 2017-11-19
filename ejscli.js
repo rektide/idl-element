@@ -92,7 +92,7 @@ export function output( ctx){
 	return output
 }
 
-export let defaults= {
+export let base= {
 	alias,
 	argv,
 	args,
@@ -103,6 +103,15 @@ export let defaults= {
 	templates,
 	output
 }
+
+// override options to be strict by default, while preserving base's original key ordering
+export let defaults= Object.assign({}, base, {options: function( ctx){
+	var o= options(ctx)
+	if( o.strict=== undefined){
+		o.strict= true
+	}
+	return o
+}})
 
 var _defaults= defaults
 
