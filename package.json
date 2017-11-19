@@ -1,6 +1,6 @@
 {
 	"name": "ejscli",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Evaluate an ejs template",
 	"main": "ejscli.js",
 	"scripts": {
