@@ -31,8 +31,8 @@ class <%= name %> extends HTMLElement{
 <% } -%>
 <% }else if(member.type=== "operation"){ -%>
 	<%= member.name %>(<%= member.arguments.join(",") %>)/*: <%= idlType(member.idlType) %> */{
-<% if( underlay){ %>
-		return <%= target %><% member.name %>(<%= member.arguments.join(",") %>)
+<% if( underlay){ -%>
+		return <%= target %><%= member.name %>(<%= member.arguments.join(",") %>)
 <% } -%>
 	}
 <% } -%>
