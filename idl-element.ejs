@@ -40,6 +40,7 @@ class <%= name %> extends HTMLElement{
 <% if( underlay) { -%>
 <% for( name of events){ -%>
 	_<%= name %>(evt){
+		evt.overlaySource= this
 		this.dispatchEvent("<%= name %>", evt)
 	}
 <% } -%>
@@ -54,25 +55,21 @@ class <%= name %> extends HTMLElement{
 <% } -%>
 <% } -%>
 	}
-	connectedCallback(){
+	async connectedCallback(){
 <% if( underlay){ -%>
-		if( !this._underlay&& this._underlyingFactory){
-<% function bindHandlers(removeListener){ -%>
-			if( this._underlay.on){
-				for( var name of events){
-					this._underlay[removeListener? "removeEventListener": "addEventListener"]( "<%= name %>", this._<%= name %>)
+		if( !this._underlay&& this._underlayFactory){
+			this._underlay= this._underlayFactory()
+		}
+		if( this._underlay){
+			// bind the value as soon as available
+			this._underlay= await this._underlay
+
+			// bind handlers
+			var add= o.addEventListener|| o.on
+			if( add){
+				for( var name of <%= name %>.events){
+					add.call( o, name, this[ "_"+ name])
 				}
-			}
-<% } %>
-			var val= this._underlyingFactory()
-			if( val.then){
-				Promise.resolve( val).then(val=> {
-					this._underlay= val
-					<% bindHandlers() %>
-				})
-			}else{
-				this._underlay= val
-				<% bindHandlers() %>
 			}
 		}
 <% } -%>
