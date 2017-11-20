@@ -38,10 +38,10 @@ class <%= name %> extends HTMLElement{
 <% } -%>
 <% } -%>
 <% if( underlay) { -%>
-<% for( name of events){ -%>
-	_<%= name %>(evt){
+<% for( eventName of events){ -%>
+	_<%= eventName %>(evt){
 		evt.overlaySource= this
-		this.dispatchEvent("<%= name %>", evt)
+		this.dispatchEvent("<%= eventName %>", evt)
 	}
 <% } -%>
 <% } -%>
@@ -50,8 +50,8 @@ class <%= name %> extends HTMLElement{
 	static get events(){ return <%- JSON.stringify( events) %> }
 	constructor(){
 <% if( underlay){ -%>
-<% for( name of events){ -%>
-		this._<%= name %>= this._<%= name %>.bind( this)
+<% for( eventName of events){ -%>
+		this._<%= eventName %>= this._<%= eventName %>.bind( this)
 <% } -%>
 <% } -%>
 	}
@@ -67,8 +67,8 @@ class <%= name %> extends HTMLElement{
 			// bind handlers
 			var add= o.addEventListener|| o.on
 			if( add){
-				for( var name of <%= name %>.events){
-					add.call( o, name, this[ "_"+ name])
+				for( var eventName of <%= name %>.events){
+					add.call( o, eventName, this[ "_"+ eventName])
 				}
 			}
 		}
